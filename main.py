@@ -22,10 +22,10 @@ def info() -> typing.Dict:
 
     return {
         "apiversion": "1",
-        "author": "",  # TODO: Your Battlesnake Username
-        "color": "#888888",  # TODO: Choose color
-        "head": "default",  # TODO: Choose head
-        "tail": "default",  # TODO: Choose tail
+        "author": "Tiit's",  # DONE: Your Battlesnake Username
+        "color": "#1037e3",  # DONE: Choose color
+        "head": "all-seeing",  # DONE: Choose head
+        "tail": "mystic-moon",  # DONE: Choose tail
     }
 
 
@@ -62,7 +62,7 @@ def move(game_state: typing.Dict) -> typing.Dict:
     elif my_neck["y"] > my_head["y"]:  # Neck is above head, don't move up
         is_move_safe["up"] = False
 
-    # TODO: Step 1 - Prevent your Battlesnake from moving out of bounds
+    # DONE: Step 1 - Prevent your Battlesnake from moving out of bounds
     board_width = game_state['board']['width']
     board_height = game_state['board']['height']
 
@@ -76,7 +76,7 @@ def move(game_state: typing.Dict) -> typing.Dict:
     elif my_head["y"] == board_height-1:
         is_move_safe["up"] = False
 
-    # TODO: Step 2 - Prevent your Battlesnake from colliding with itself
+    # DONE: Step 2 - Prevent your Battlesnake from colliding with itself
     my_body = game_state['you']['body']
 
     for body in my_body:
@@ -91,8 +91,20 @@ def move(game_state: typing.Dict) -> typing.Dict:
             is_move_safe["down"] = False
 
 
-    # TODO: Step 3 - Prevent your Battlesnake from colliding with other Battlesnakes
-    # opponents = game_state['board']['snakes']
+    # DONE: Step 3 - Prevent your Battlesnake from colliding with other Battlesnakes
+    opponents = game_state['board']['snakes']
+
+    for opponent in opponents:
+        for body in opponent["body"]:
+            if body["x"] == my_head["x"] + 1 and body["y"] == my_head["y"]:
+                is_move_safe["right"] = False
+            elif body["x"] == my_head["x"] - 1 and body["y"] == my_head["y"]:
+                is_move_safe["left"] = False
+
+            if body["y"] == my_head["y"] + 1 and body["x"] == my_head["x"]:
+                is_move_safe["up"] = False
+            elif body["y"] == my_head["y"] - 1 and body["x"] == my_head["x"]:
+                is_move_safe["down"] = False
 
     # Are there any safe moves left?
     safe_moves = []
